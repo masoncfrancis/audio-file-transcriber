@@ -7,10 +7,6 @@ import platform
 def is_git_installed():
     return shutil.which('git') is not None
 
-def is_ubuntu_or_debian():
-    system, _, dist = platform.linux_distribution()
-    return system == 'Linux' and dist in ('Ubuntu', 'debian')
-
 def clone_repository(repo_url, destination_folder):
     print("\nGetting whisper.cpp from GitHub...\n")
 
@@ -71,15 +67,6 @@ if __name__ == "__main__":
 
         # Check if ffmpeg is installed
         if shutil.which('ffmpeg') is None:
-            if is_ubuntu_or_debian():
-                print("\nffmpeg is not installed. Installing ffmpeg...\n")
-                try:
-                    subprocess.run(['sudo', 'apt-get', 'install', 'ffmpeg'], check=True)
-                    print("\nffmpeg installed successfully\n")
-                except subprocess.CalledProcessError as e:
-                    print(f"\nError: {e}")
-                    sys.exit()
-            else:
-                print("\nffmpeg is not installed. Please install ffmpeg and try again.")
-                sys.exit()
+            print("\nffmpeg is not installed. Please install ffmpeg and try again.")
+            sys.exit()
             
