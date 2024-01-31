@@ -53,7 +53,7 @@ def clone_repository(repo_url, destination_folder):
 
 if __name__ == "__main__":
     # Describe what the script is going to do and ask for confirmation
-    print("This script will set up the environment for journal transcription.")
+    print("This script will set up the environment for audio file transcription.")
     print("All changes made by this script will be confined to this folder. ")
     print("\nWould you like to continue? (y/n)")
     response = input()
@@ -94,7 +94,7 @@ if __name__ == "__main__":
         print("\nDownloading AI model...\n")
         subprocess.run(['bash', './models/download-ggml-model.sh', 'base.en'])
         print("\nAI model downloaded successfully\n")
-        
+
     except subprocess.CalledProcessError as e:
         print(f"\nError: {e}")
         sys.exit()
