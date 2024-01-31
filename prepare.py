@@ -10,17 +10,17 @@ def check_dependencies():
     dependenciesInstalled = True
 
     # Check if git is installed
-    if not is_git_installed():
+    if not shutil.which('git') is not None:
         print("Git is not installed.")
         dependenciesInstalled = False
 
     # Check if ffmpeg is installed
-    if not is_ffmpeg_installed():
+    if not shutil.which('ffmpeg') is not None:
         print("ffmpeg is not installed.")
         dependenciesInstalled = False
 
     # Check if make is installed
-    if not is_make_installed():
+    if not shutil.which('make') is not None:
         print("make is not installed.")
         dependenciesInstalled = False
 
@@ -29,17 +29,6 @@ def check_dependencies():
         sys.exit()
     
     print("All dependencies are installed.")
-
-
-def is_git_installed():
-    return shutil.which('git') is not None
-
-
-def is_ffmpeg_installed():
-    return shutil.which('ffmpeg') is not None
-
-def is_make_installed():
-    return shutil.which('make') is not None
 
 
 def clone_repository(repo_url, destination_folder):
