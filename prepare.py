@@ -80,7 +80,7 @@ if __name__ == "__main__":
         subprocess.run(['make'], check=True)
         print("\nwhisper.cpp built successfully\n")
         
-        print("\nDownloading AI model...\n")
+        print("Downloading AI model...\n")
         subprocess.run(['bash', './models/download-ggml-model.sh', 'base.en'])
         print("\nAI model downloaded successfully\n")
 
