@@ -90,6 +90,11 @@ if __name__ == "__main__":
     try:
         subprocess.run(['make'], check=True)
         print("\nwhisper.cpp built successfully\n")
+        
+        print("\nDownloading AI model...\n")
+        subprocess.run(['bash', './models/download-ggml-model.sh', 'base.en'])
+        print("\nAI model downloaded successfully\n")
+        
     except subprocess.CalledProcessError as e:
         print(f"\nError: {e}")
         sys.exit()
