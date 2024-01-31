@@ -4,17 +4,45 @@ import os
 import sys
 import platform
 
+def check_dependencies():
+    print("\nChecking dependencies...\n")
+
+    dependenciesInstalled = True
+
+    # Check if git is installed
+    if not is_git_installed():
+        print("Git is not installed.")
+        dependenciesInstalled = False
+
+    # Check if ffmpeg is installed
+    if not is_ffmpeg_installed():
+        print("ffmpeg is not installed.")
+        dependenciesInstalled = False
+
+    # Check if make is installed
+    if not is_make_installed():
+        print("make is not installed.")
+        dependenciesInstalled = False
+
+    if not dependenciesInstalled:
+        print("Please install the missing dependencies and run this script again.")
+        sys.exit()
+    
+    print("All dependencies are installed.")
+
+
 def is_git_installed():
     return shutil.which('git') is not None
 
+
+def is_ffmpeg_installed():
+    return shutil.which('ffmpeg') is not None
+
+def is_make_installed():
+    return shutil.which('make') is not None
+
+
 def clone_repository(repo_url, destination_folder):
-    print("\nGetting whisper.cpp from GitHub...\n")
-
-    # Remove existing whisper.cpp folder if it exists
-    if os.path.exists(destination_folder):
-        print("Removing existing whisper.cpp folder...")
-        shutil.rmtree(destination_folder)
-
     try:
         subprocess.run(['git', 'clone', repo_url, destination_folder], check=True)
         print(f"Repository cloned successfully to '{destination_folder}'")
@@ -22,11 +50,11 @@ def clone_repository(repo_url, destination_folder):
         print(f"Error: {e}")
         sys.exit()
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     # Describe what the script is going to do and ask for confirmation
     print("This script will set up the environment for journal transcription.")
-    print("Note: ffmpeg will be installed. If you don't want that, please do not continue. ")
+    print("All changes made by this script will be confined to this folder. ")
     print("\nWould you like to continue? (y/n)")
     response = input()
 
@@ -34,39 +62,41 @@ if __name__ == "__main__":
         print("Exiting...")
         sys.exit()
 
-    # Continue with the script upon confirmation
+    # Check if all dependencies are installed
+    check_dependencies()
 
-    if not is_git_installed():
-        print("\nGit is not installed. Please install Git and try again.")
+    # Get the directory where the script is located
+    script_directory = os.path.dirname(os.path.abspath(__file__))
+
+    # Use the script directory as the destination folder
+    destination_folder = script_directory + "/whisper.cpp"
+
+    print("\nGetting whisper.cpp from GitHub...\n")
+
+    # Remove existing whisper.cpp folder if it exists
+    if os.path.exists(destination_folder):
+        print("Removing existing whisper.cpp folder...")
+        shutil.rmtree(destination_folder)
+
+    repo_url = 'https://github.com/ggerganov/whisper.cpp'
+
+    clone_repository(repo_url, destination_folder)
+
+    # Change the working directory to the destination folder
+    os.chdir(destination_folder)
+
+    # Build whisper.cpp
+    print("\nBuilding whisper.cpp using make...\n")
+    try:
+        subprocess.run(['make'], check=True)
+        print("\nwhisper.cpp built successfully\n")
+    except subprocess.CalledProcessError as e:
+        print(f"\nError: {e}")
         sys.exit()
-    else:
-        # Get the directory where the script is located
-        script_directory = os.path.dirname(os.path.abspath(__file__))
 
-        # Use the script directory as the destination folder
-        destination_folder = script_directory + "/whisper.cpp"
+    # Change the working directory back to the script directory
+    os.chdir(script_directory)
 
-        repo_url = 'https://github.com/ggerganov/whisper.cpp'
-
-        clone_repository(repo_url, destination_folder)
-
-        # Change the working directory to the destination folder
-        os.chdir(destination_folder)
-
-        # Build whisper.cpp
-        print("\nBuilding whisper.cpp using make...\n")
-        try:
-            subprocess.run(['make'], check=True)
-            print("\nwhisper.cpp built successfully\n")
-        except subprocess.CalledProcessError as e:
-            print(f"\nError: {e}")
-            sys.exit()
-
-        # Change the working directory back to the script directory
-        os.chdir(script_directory)
-
-        # Check if ffmpeg is installed
-        if shutil.which('ffmpeg') is None:
-            print("\nffmpeg is not installed. Please install ffmpeg and try again.")
-            sys.exit()
-            
+    # All done
+    print("Environment setup complete.")
+         
