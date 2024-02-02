@@ -8,21 +8,7 @@ def list_files(input_dir, output_dir):
         print(f"Error: Input directory '{input_dir}' does not exist.")
         sys.exit(1)
 
-    # Get the list of files in the input directory
-    files = os.listdir(input_dir)
-
-    # Create the output directory if it doesn't exist
-    os.makedirs(output_dir, exist_ok=True)
-
-    # Generate the output file path
-    output_file_path = os.path.join(output_dir, "file_list.txt")
-
-    # Write the list of files to the output file
-    with open(output_file_path, "w") as output_file:
-        for file in files:
-            output_file.write(file + "\n")
-
-    print(f"File list has been written to '{output_file_path}'.")
+    # TODO finish this
 
 if __name__ == "__main__":
     # Set up command line argument parser
