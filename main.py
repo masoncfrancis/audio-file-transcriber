@@ -17,15 +17,36 @@ def handleArguments(inputDir=None, outputDir=None, inputFile=None, outputFile=No
         print("Error: 'input_file' cannot be provided with 'output_dir'.")
         sys.exit(1)
 
-    # TODO: Add the logic for processing files here
+    if inputDir and not os.path.exists(inputDir):
+        print(f"Error: Input directory '{inputDir}' does not exist.")
+        sys.exit(1)
+
+    if inputFile and not os.path.exists(inputFile):
+        print(f"Error: Input file '{inputFile}' does not exist.")
+        sys.exit(1)
+
 
 if __name__ == "__main__":
-    # Set up command line argument parser
+    # set up parser
     parser = argparse.ArgumentParser(description="List files in a directory and output to a text file.")
-    parser.add_argument('-id', '--input-dir', help='Input directory path')
-    parser.add_argument('-od', '--output-dir', help='Output directory path')
-    parser.add_argument('-if', '--input-file', help='Input file path')
-    parser.add_argument('-of', '--output-file', help='Output file path')
+
+    # Define argument groups
+    input_group = parser.add_mutually_exclusive_group(required=True)
+    output_group = parser.add_mutually_exclusive_group(required=True)
+
+    # Add arguments to groups
+    input_group.add_argument('-id', '--input-dir', help='Input directory path')
+    input_group.add_argument('-if', '--input-file', help='Input file path')
+
+    output_group.add_argument('-od', '--output-dir', help='Output directory path')
+    output_group.add_argument('-of', '--output-file', help='Output file path')
+
+    # Print usage information if no arguments are provided
+    if len(sys.argv) == 1:
+        parser.print_help()
+        sys.exit(1)
+
+    # Parse command line arguments
     args = parser.parse_args()
 
     # Call the function to list files and write to a text file
