@@ -2,18 +2,18 @@ import os
 import sys
 import argparse
 
-def process_files(input_dir=None, output_dir=None, input_file=None, output_file=None):
+def handleArguments(inputDir=None, outputDir=None, inputFile=None, outputFile=None):
     # Check for valid combinations of input and output
-    if (input_dir is None and input_file is None) or (output_dir is None and output_file is None):
+    if (inputDir is None and inputFile is None) or (outputDir is None and outputFile is None):
         print("Error: Either 'input_dir' and 'output_dir' must be provided together, or 'input_file' and 'output_file' must be provided together.")
         sys.exit(1)
 
     # Check for invalid combinations
-    if input_dir and output_file:
+    if inputDir and outputFile:
         print("Error: 'input_dir' cannot be provided with 'output_file'.")
         sys.exit(1)
 
-    if input_file and output_dir:
+    if inputFile and outputDir:
         print("Error: 'input_file' cannot be provided with 'output_dir'.")
         sys.exit(1)
 
@@ -29,4 +29,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Call the function to list files and write to a text file
-    process_files(args.input_dir, args.output_dir, args.input_file, args.output_file)
+    handleArguments(args.input_dir, args.output_dir, args.input_file, args.output_file)
