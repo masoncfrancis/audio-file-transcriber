@@ -3,24 +3,28 @@ import sys
 import argparse
 
 def handleArguments(inputDir=None, outputDir=None, inputFile=None, outputFile=None):
+    
     # Check for valid combinations of input and output
     if (inputDir is None and inputFile is None) or (outputDir is None and outputFile is None):
         print("Error: Either 'input_dir' and 'output_dir' must be provided together, or 'input_file' and 'output_file' must be provided together.")
         sys.exit(1)
 
-    # Check for invalid combinations
+    # Check for invalid combinations of input and output
     if inputDir and outputFile:
         print("Error: 'input_dir' cannot be provided with 'output_file'.")
         sys.exit(1)
 
+    # Check for invalid combinations of input and output
     if inputFile and outputDir:
         print("Error: 'input_file' cannot be provided with 'output_dir'.")
         sys.exit(1)
 
+    # Check for valid input directory
     if inputDir and not os.path.exists(inputDir):
         print(f"Error: Input directory '{inputDir}' does not exist.")
         sys.exit(1)
 
+    # Check for valid output file
     if inputFile and not os.path.exists(inputFile):
         print(f"Error: Input file '{inputFile}' does not exist.")
         sys.exit(1)
@@ -28,7 +32,7 @@ def handleArguments(inputDir=None, outputDir=None, inputFile=None, outputFile=No
 
 if __name__ == "__main__":
     # set up parser
-    parser = argparse.ArgumentParser(description="List files in a directory and output to a text file.")
+    parser = argparse.ArgumentParser(description="Transcribe audio file(s)")
 
     # Define argument groups
     input_group = parser.add_mutually_exclusive_group(required=True)
