@@ -1,7 +1,10 @@
 import os
 import sys
 import argparse
+import glob
 
+
+# Function to handle command line arguments
 def handleArguments(inputDir=None, outputDir=None, inputFile=None, outputFile=None):
     
     # Check for valid combinations of input and output
@@ -30,20 +33,35 @@ def handleArguments(inputDir=None, outputDir=None, inputFile=None, outputFile=No
         sys.exit(1)
 
 
+# Function to list audio files in the input directory
+def getFileList(inputDir):
+    # Define audio extensions
+    audioExtensions = ['*.mp3', '*.wav', '*.ogg', '*.flac', '*.aiff', '*.aac']
+
+    # List audio files
+    files = []
+    for ext in audioExtensions:
+        for file in glob.glob(os.path.join(inputDir, '**', ext), recursive=True):
+            files.append(file)
+
+    return files
+
+
 if __name__ == "__main__":
+    
     # set up parser
     parser = argparse.ArgumentParser(description="Transcribe audio file(s)")
 
     # Define argument groups
-    input_group = parser.add_mutually_exclusive_group(required=True)
-    output_group = parser.add_mutually_exclusive_group(required=True)
+    inputGroup = parser.add_mutually_exclusive_group(required=True)
+    outputGroup = parser.add_mutually_exclusive_group(required=True)
 
     # Add arguments to groups
-    input_group.add_argument('-id', '--input-dir', help='Input directory path')
-    input_group.add_argument('-if', '--input-file', help='Input file path')
+    inputGroup.add_argument('-id', '--input-dir', help='Input directory path')
+    inputGroup.add_argument('-if', '--input-file', help='Input file path')
 
-    output_group.add_argument('-od', '--output-dir', help='Output directory path')
-    output_group.add_argument('-of', '--output-file', help='Output file path')
+    outputGroup.add_argument('-od', '--output-dir', help='Output directory path')
+    outputGroup.add_argument('-of', '--output-file', help='Output file path')
 
     # Print usage information if no arguments are provided
     if len(sys.argv) == 1:
