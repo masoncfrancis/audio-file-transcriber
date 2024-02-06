@@ -1,8 +1,40 @@
 import os
 import sys
+import shutil
 import argparse
 import glob
 
+
+def check_dependencies():
+    print("\nChecking dependencies...\n")
+
+    dependenciesInstalled = True
+
+    if not os.path.isfile('./whisper.cpp/main'):
+        print("\nwhisper.cpp may not be downloaded or built correctly")
+        print("Please run prepare.py again to correct this")
+        dependenciesInstalled = False
+
+    # Check if git is installed
+    if not shutil.which('git') is not None:
+        print("Git is not installed.")
+        dependenciesInstalled = False
+
+    # Check if ffmpeg is installed
+    if not shutil.which('ffmpeg') is not None:
+        print("ffmpeg is not installed.")
+        dependenciesInstalled = False
+
+    # Check if make is installed
+    if not shutil.which('make') is not None:
+        print("make is not installed.")
+        dependenciesInstalled = False
+
+    if not dependenciesInstalled:
+        print("\nPlease install the missing dependencies and try again")
+        sys.exit()
+    
+    print("All dependencies are installed.")
 
 # Function to handle command line arguments
 def handleArguments(inputDir=None, outputDir=None, inputFile=None, outputFile=None):
@@ -48,6 +80,8 @@ def getFileList(inputDir):
 
 
 if __name__ == "__main__":
+
+    check_dependencies() # check to make sure dependencies are installed
     
     # set up parser
     parser = argparse.ArgumentParser(description="Transcribe audio file(s)")
@@ -65,6 +99,7 @@ if __name__ == "__main__":
 
     # Print usage information if no arguments are provided
     if len(sys.argv) == 1:
+        print("\n")
         parser.print_help()
         sys.exit(1)
 
