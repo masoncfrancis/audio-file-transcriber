@@ -33,15 +33,16 @@ def check_dependencies():
     if not dependenciesInstalled:
         print("\nPlease install the missing dependencies and try again")
         sys.exit()
-    
+
     print("All dependencies are installed.")
+
 
 # Function to handle command line arguments
 def handleArguments(inputDir=None, outputDir=None, inputFile=None, outputFile=None):
-    
     # Check for valid combinations of input and output
     if (inputDir is None and inputFile is None) or (outputDir is None and outputFile is None):
-        print("Error: Either 'input_dir' and 'output_dir' must be provided together, or 'input_file' and 'output_file' must be provided together.")
+        print(
+            "Error: Either 'input_dir' and 'output_dir' must be provided together, or 'input_file' and 'output_file' must be provided together.")
         sys.exit(1)
 
     # Check for invalid combinations of input and output
@@ -81,8 +82,8 @@ def getFileList(inputDir):
 
 if __name__ == "__main__":
 
-    check_dependencies() # check to make sure dependencies are installed
-    
+    check_dependencies()  # check to make sure dependencies are installed
+
     # set up parser
     parser = argparse.ArgumentParser(description="Transcribe audio file(s)")
 

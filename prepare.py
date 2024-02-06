@@ -2,7 +2,7 @@ import subprocess
 import shutil
 import os
 import sys
-import platform
+
 
 def check_dependencies():
     print("\nChecking dependencies...\n")
@@ -27,7 +27,7 @@ def check_dependencies():
     if not dependenciesInstalled:
         print("Please install the missing dependencies and run this script again.")
         sys.exit()
-    
+
     print("All dependencies are installed.")
 
 
@@ -47,7 +47,7 @@ if __name__ == "__main__":
     print("\nWould you like to continue? (y/n)")
     response = input()
 
-    if response.lower() != 'y': # Exit if the user does not confirm
+    if response.lower() != 'y':  # Exit if the user does not confirm
         print("Exiting...")
         sys.exit()
 
@@ -79,7 +79,7 @@ if __name__ == "__main__":
     try:
         subprocess.run(['make'], check=True)
         print("\nwhisper.cpp built successfully\n")
-        
+
         print("Downloading AI model...\n")
         subprocess.run(['bash', './models/download-ggml-model.sh', 'base.en'])
         print("\nAI model downloaded successfully\n")
@@ -93,4 +93,3 @@ if __name__ == "__main__":
 
     # All done
     print("Environment setup complete.")
-         
