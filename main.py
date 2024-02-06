@@ -3,6 +3,7 @@ import sys
 import shutil
 import argparse
 import glob
+import subprocess
 
 
 def check_dependencies():
@@ -66,6 +67,49 @@ def handleArguments(inputDir=None, outputDir=None, inputFile=None, outputFile=No
         sys.exit(1)
 
 
+def processFile(inputFile, outputFile):
+    # convert file to appropriate wav format using ffmpeg
+    convertedFilePath = convertAudio(inputFile)
+    transcribeFile(inputFile, outputFile)
+
+
+# Converts file to audio format needed by whisper.cpp
+def convertAudio(inputFile):
+    print("Preparing audio file " + inputFile + " for transcription")
+    command = [
+    "ffmpeg",
+    "-i", inputFile,
+    "-ar", "16000",
+    "-ac", "1",
+    "-c:a", "pcm_s16le",
+    inputFile + ".wav"
+    ]
+
+    # Run the command
+    subprocess.run(command)
+    return inputFile + ".wav"
+
+
+def transcribeFile(inputFile, outputFile):
+    print("Transcribing file...")
+
+    # Get the directory where the script is located
+    script_directory = os.path.dirname(os.path.abspath(__file__))
+
+    # Use the script directory to find the whisper.cpp installation
+    whisperFolder = script_directory + "/whisper.cpp"
+    os.chdir(whisperFolder)
+
+    command = "./main -f " + inputFile + ".wav -otxt -m models/ggml-base.en.bin"
+    subprocess.run(command, shell=True)
+
+
+    # rename the file to specified name
+    os.rename(inputFile + ".wav.txt", outputFile)
+
+    print("Transcription of " + inputFile + " finished")
+
+
 # Function to list audio files in the input directory
 def getFileList(inputDir):
     # Define audio extensions
@@ -107,5 +151,13 @@ if __name__ == "__main__":
     # Parse command line arguments
     args = parser.parse_args()
 
-    # Call the function to list files and write to a text file
+    # Check to make sure arguments are passed in properly
     handleArguments(args.input_dir, args.output_dir, args.input_file, args.output_file)
+
+    # Check if we are working with directories or files
+    singleFile = False
+    if args.input_file and args.output_file:
+        singleFile = True
+
+    if singleFile:
+        processFile(args.input_file, args.output_file)
