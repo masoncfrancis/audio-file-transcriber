@@ -67,6 +67,13 @@ def handleArguments(inputDir=None, outputDir=None, inputFile=None, outputFile=No
         sys.exit(1)
 
 
+# Handles the transcription of files in a directory
+def processDir(inputDir):
+    fileList = getFileList(inputDir)
+    for file in fileList:
+        processFile(file, file + ".txt")
+
+
 def processFile(inputFile, outputFile):
     # convert file to appropriate wav format using ffmpeg
     convertedFilePath = convertAudio(inputFile)
@@ -106,6 +113,9 @@ def transcribeFile(inputFile, outputFile):
 
     # rename the file to specified name
     os.rename(inputFile + ".wav.txt", outputFile)
+
+    # remove the file created by ffmpeg
+    os.remove(inputFile + ".wav")
 
     print("Transcription of " + inputFile + " finished")
 
@@ -161,3 +171,5 @@ if __name__ == "__main__":
 
     if singleFile:
         processFile(args.input_file, args.output_file)
+    else:
+        processDir(args.input_dir) # TODO implement output file argument
