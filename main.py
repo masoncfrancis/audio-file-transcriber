@@ -76,12 +76,12 @@ def processDir(inputDir):
 
 def processFile(inputFile, outputFile):
     # convert file to appropriate wav format using ffmpeg
-    convertedFilePath = convertAudio(inputFile)
-    transcribeFile(inputFile, outputFile)
+    convertedFilePath = convertAudio(inputFile, outputFile)
+    transcribeFile(convertedFilePath, outputFile)
 
 
 # Converts file to audio format needed by whisper.cpp
-def convertAudio(inputFile):
+def convertAudio(inputFile, outputFile):
     print("Preparing audio file " + inputFile + " for transcription")
     command = [
     "ffmpeg",
@@ -89,12 +89,12 @@ def convertAudio(inputFile):
     "-ar", "16000",
     "-ac", "1",
     "-c:a", "pcm_s16le",
-    inputFile + ".wav"
+    outputFile + ".wav"
     ]
 
     # Run the command
     subprocess.run(command)
-    return inputFile + ".wav"
+    return outputFile + ".wav"
 
 
 def transcribeFile(inputFile, outputFile):
@@ -107,7 +107,7 @@ def transcribeFile(inputFile, outputFile):
     whisperFolder = script_directory + "/whisper.cpp"
     os.chdir(whisperFolder)
 
-    command = "./main -f " + inputFile + ".wav -otxt -m models/ggml-base.en.bin"
+    command = "./main -f " + inputFile + " -otxt -m models/ggml-base.en.bin"
     subprocess.run(command, shell=True)
 
 
