@@ -176,4 +176,4 @@ if __name__ == "__main__":
     if singleFile:
         processFile(args.input_file, args.output_file)
     else:
-        processDir(args.input_dir) # TODO implement output file argument
+        processDir(args.input_dir, args.output_dir) # TODO implement output file argument
