@@ -68,10 +68,14 @@ def handleArguments(inputDir=None, outputDir=None, inputFile=None, outputFile=No
 
 
 # Handles the transcription of files in a directory
-def processDir(inputDir):
+def processDir(inputDir, outputDir):
     fileList = getFileList(inputDir)
     for file in fileList:
-        processFile(file, file + ".txt")
+        # Get the filename from the input file path
+        filename = os.path.basename(file)
+        # Construct the output file path using the output directory and the filename
+        outputFile = os.path.join(outputDir, filename + ".txt")
+        processFile(file, outputFile)
 
 
 def processFile(inputFile, outputFile):
