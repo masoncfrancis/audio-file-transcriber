@@ -68,7 +68,7 @@ def handleArguments(inputDir=None, outputDir=None, inputFile=None, outputFile=No
 
 
 # Handles the transcription of files in a directory
-def processDir(inputDir):
+def processDir(inputDir, outputDir=None):  # TODO implement output file argument
     fileList = getFileList(inputDir)
     for file in fileList:
         processFile(file, file + ".txt")
@@ -173,4 +173,5 @@ if __name__ == "__main__":
     if singleFile:
         processFile(args.input_file, args.output_file)
     else:
-        processDir(args.input_dir)  # TODO implement output file argument
+        # TODO implement output file argument
+        processDir(args.input_dir, args.output_dir)
