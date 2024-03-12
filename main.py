@@ -84,12 +84,12 @@ def processFile(inputFile, outputFile):
 def convertAudio(inputFile, outputFile):
     print("Preparing audio file " + inputFile + " for transcription")
     command = [
-    "ffmpeg",
-    "-i", inputFile,
-    "-ar", "16000",
-    "-ac", "1",
-    "-c:a", "pcm_s16le",
-    outputFile + ".wav"
+        "ffmpeg",
+        "-i", inputFile,
+        "-ar", "16000",
+        "-ac", "1",
+        "-c:a", "pcm_s16le",
+        outputFile + ".wav"
     ]
 
     # Run the command
@@ -109,7 +109,6 @@ def transcribeFile(inputFile, outputFile):
 
     command = "./main -f " + inputFile + " -otxt -m models/ggml-base.en.bin"
     subprocess.run(command, shell=True)
-
 
     # rename the file to specified name
     os.rename(inputFile + ".wav.txt", outputFile)
@@ -149,7 +148,8 @@ if __name__ == "__main__":
     inputGroup.add_argument('-id', '--input-dir', help='Input directory path')
     inputGroup.add_argument('-if', '--input-file', help='Input file path')
 
-    outputGroup.add_argument('-od', '--output-dir', help='Output directory path')
+    outputGroup.add_argument('-od', '--output-dir',
+                             help='Output directory path')
     outputGroup.add_argument('-of', '--output-file', help='Output file path')
 
     # Print usage information if no arguments are provided
@@ -162,7 +162,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Check to make sure arguments are passed in properly
-    handleArguments(args.input_dir, args.output_dir, args.input_file, args.output_file)
+    handleArguments(args.input_dir, args.output_dir,
+                    args.input_file, args.output_file)
 
     # Check if we are working with directories or files
     singleFile = False
@@ -172,4 +173,4 @@ if __name__ == "__main__":
     if singleFile:
         processFile(args.input_file, args.output_file)
     else:
-        processDir(args.input_dir) # TODO implement output file argument
+        processDir(args.input_dir)  # TODO implement output file argument

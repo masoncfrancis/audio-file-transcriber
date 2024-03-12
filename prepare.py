@@ -33,7 +33,8 @@ def check_dependencies():
 
 def clone_repository(repo_url, destination_folder):
     try:
-        subprocess.run(['git', 'clone', repo_url, destination_folder], check=True)
+        subprocess.run(['git', 'clone', repo_url,
+                       destination_folder], check=True)
         print(f"Repository cloned successfully to '{destination_folder}'")
     except subprocess.CalledProcessError as e:
         print(f"Error: {e}")
