@@ -24,6 +24,11 @@ def check_dependencies():
         print("make is not installed.")
         dependenciesInstalled = False
 
+    # Check if make is installed
+    if not shutil.which('cmake') is not None:
+        print("make is not installed.")
+        dependenciesInstalled = False
+
     if not dependenciesInstalled:
         print("Please install the missing dependencies and run this script again.")
         sys.exit()
