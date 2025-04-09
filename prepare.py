@@ -82,7 +82,7 @@ if __name__ == "__main__":
     # Build whisper.cpp
     print("\nBuilding whisper.cpp using make...\n")
     try:
-        subprocess.run(['make'], check=True)
+        subprocess.run(['make', "build"], check=True)
         print("\nwhisper.cpp built successfully\n")
 
         print("Downloading AI model...\n")
